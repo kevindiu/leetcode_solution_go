@@ -1,18 +1,13 @@
 // https://leetcode.com/problems/rotting-oranges/
-type pair struct {
-    i int
-    j int
-}
-
 func orangesRotting(grid [][]int) int {
-    rottens := make([]pair, 0)
+    rottens := make([][]int, 0)
     
     freshCount := 0
     for i := 0; i < len(grid); i++ {
         for j := 0; j < len(grid[i]); j++ {
             c := grid[i][j]
             if c == 2 {
-                rottens = append(rottens, pair{i,j})
+                rottens = append(rottens, []int{i,j})
             } else if c == 1 {
                 freshCount++
             }
@@ -31,11 +26,14 @@ func orangesRotting(grid [][]int) int {
             r := rottens[0]
             rottens = rottens[1:]
             for _, d := range dirs {
-                if rotte(grid, (r.i + d[0]), (r.j + d[1])) {
+                if rotte(grid, (r[0] + d[0]), (r[1] + d[1])) {
                     freshCount--
-                    rottens = append(rottens, pair{r.i + d[0], r.j + d[1]})
+                    rottens = append(rottens, []int{r[0] + d[0], r[1] + d[1]})
                 }
             }
+        }
+        if freshCount == 0 {
+            return cnt
         }
     }
 
