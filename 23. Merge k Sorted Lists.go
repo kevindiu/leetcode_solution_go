@@ -29,23 +29,15 @@ func mergeKLists(lists []*ListNode) *ListNode {
     if h.Len() == 0 {
         return nil
     }
+    
     heap.Init(h)
-      
-    n := heap.Pop(h).(node)
-    result := &ListNode{
-        Val: n.Val,
+  
+    result := &ListNode{ // init dummy node to avoid nil
+        Val: -1,
     }
-    
-    if lists[n.Idx] != nil {
-        heap.Push(h, node {
-            Val: lists[n.Idx].Val,
-            Idx: n.Idx,
-        })
-        lists[n.Idx] = lists[n.Idx].Next
-    }
-    
     cur := result
-    for h.Len() > 0 {
+    
+    for {    
         n := heap.Pop(h).(node)
         cur.Next = &ListNode{Val: n.Val}
         cur = cur.Next
@@ -56,10 +48,14 @@ func mergeKLists(lists []*ListNode) *ListNode {
                Idx: n.Idx,
             })
             lists[n.Idx] = lists[n.Idx].Next
-         }
+        }
+        
+        if h.Len() == 0 {
+            break
+        }
     }
     
-    return result
+    return result.Next
 }
 
 type node struct {
